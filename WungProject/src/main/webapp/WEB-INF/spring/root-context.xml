@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.1.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 일반 DataSource
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>	
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>	
+		<property name="username" value="wungproject"></property>	
+		<property name="password" value="0000"></property>	
+	</bean>
+	-->
+	<!-- 일반 MyBatis 설정을 위한 SqlSession Factory 객체 설정 
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	 	<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/mybatis-config-oracle.xml"></property>
+		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"></property>			
+	</bean>
+	  
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+	  <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	-->
+	
+	<!-- DataSource+Log4j 추가 MySql-->
+	<bean id="dataSource_MySql" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>	<!-- log4jdbc-log4j2-jdbc4 -->
+		<property name="url" value="jdbc:log4jdbc:mysql://127.0.0.1:3306/wungproject"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>	
+	<bean id="dataSource_my" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">		<!-- log4jdbc-remix -->
+        <constructor-arg ref="dataSource_MySql" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="SQL         :  "/>
+            </bean>
+        </property>
+    </bean>
+	<bean id="sqlSessionFactory_my" class="org.mybatis.spring.SqlSessionFactoryBean">
+	 	<property name="dataSource" ref="dataSource_my" />
+		<property name="configLocation" value="classpath:/mybatis-config-mysql.xml"></property>
+		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"></property>			
+	</bean>
+	  
+	<bean id="sqlSession_my" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+	  <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory_my"></constructor-arg>
+	</bean>
+	
+	
+	
+	<!-- DataSource+Log4j 추가 Oracle-->
+	<bean id="dataSource_oracle" class="org.springframework.jdbc.datasource.DriverManagerDataSource"><!-- log4jdbc-log4j2-jdbc4 -->
+	    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe"></property>
+		<property name="username" value="wungproject"></property>
+		<property name="password" value="0000"></property>
+	</bean>	
+	
+	<bean id="dataSource_or" class="net.sf.log4jdbc.Log4jdbcProxyDataSource"><!-- log4jdbc-remix -->
+        <constructor-arg ref="dataSource_oracle" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="SQL         :  "/>
+            </bean>
+        </property>
+    </bean>
+	<bean id="sqlSessionFactory_or" class="org.mybatis.spring.SqlSessionFactoryBean">
+	 	<property name="dataSource" ref="dataSource_or" />
+		<property name="configLocation" value="classpath:/mybatis-config-oracle.xml"></property>
+		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"></property>			
+	</bean>
+	  
+	<bean id="sqlSession_or" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+	  <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory_or"></constructor-arg>
+	</bean>
+</beans>
