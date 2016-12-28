@@ -18,31 +18,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class HomeController {
-	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
 	/**
 	 * Simply selects the home view to render by returning its name.
-	 */
+	 *//*
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
+		return "index";
 	}
 	
-	@RequestMapping(value = "/WungService", method = RequestMethod.GET)
-	public String indexService(Locale locale, Model model) {
+	  */
+	@RequestMapping(value = "/SampleView1", method = RequestMethod.GET)
+	public String Sample1Service(Locale locale, Model model) {
 		logger.info("Welcome Main home! Owner of this Homepage is {}.", "류재웅.");
-		
-		return "main";
+		System.out.println("Test");
+		return "exampleView/SB_Admin_v2_0/index";
 	}
-	
+	@RequestMapping(value = "/SampleView2", method = RequestMethod.GET)
+	public String Sample2Service(Locale locale, Model model) {
+		logger.info("Welcome Main home! Owner of this Homepage is {}.", "류재웅.");
+		System.out.println("Test2");
+		return "exampleView/SB_Admin_v2_0/pages/index";
+	}
 }
