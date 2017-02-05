@@ -26,6 +26,7 @@ public class AdminController {
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String home(Model model) {
 		logger.info("Login Page Move");
+		System.out.println("Test");
 		return "admin/admin";
 	}
 }
